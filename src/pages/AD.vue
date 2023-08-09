@@ -328,7 +328,6 @@ computed: {
 async mounted() {
 	console.log("mounted");
 	this.loadDataForCurrentPage();
-	this.loadDate();
 },
 };
 const table1Columns = ["Date","DRB_AirDL","DRB_AirUL","DRB_RlcDL","DRB_RlcUL","Handover","Total_Delay"];
