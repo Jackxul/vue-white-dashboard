@@ -73,7 +73,7 @@ export default {
     return {
      table1:{
 	title: "AD Data Table",
-	currenttotalPage: 318,
+	currenttotalPage: 1,
 	currentPage: 1,
 	currentDataST: "ttd",
 	currentDataName: "Train Data",
@@ -228,9 +228,9 @@ methods : {
 		console.log(this.table1.currentPage);
 		try {
     		const response = await axios.get(`http://192.168.127.76:8888/${tableInfo}/${gnbNumber}/${pageNumber}`);
-				console.log(Object.values(response.data[this.table1.currentGnb]));
+				console.log(response.data.pgno);
 				console.log(typeof Object.values(response.data[this.table1.currentGnb]));
-    				return Object.values(response.data[this.table1.currentGnb]);
+    				return response.data.pgno;
 			}catch(error) {
     				console.log(error);
   			}
@@ -245,7 +245,9 @@ methods : {
   			}
 	},
 	async loadDataForCurrentPage() {
-		this.table1.data = await this.getTableData(this.table1.currentGnb , this.table1.currentDataST , this.table1.currentPage);
+		this.table1.currenttotalPage = await this.getTableData(this.table1.currentGnb , this.table1.currentDataST , this.table1.currentPage);
+		this.table1.data = await this.getChartData(this.table1.currentGnb , this.table1.currentDataST , this.table1.currentPage);
+		console.log(this.table1.currenttotalPage);
 		const fdata = await this.getChartData(this.table1.currentGnb , this.table1.currentDataST , this.table1.currentPage);
 		const RTC = await this.getChartData(this.table1.currentGnb , this.table1.currentDataST , this.table1.currentPage);
 		this.blackChart.datasets[0].data = fdata.map((item) => item.Total_Delay);
@@ -289,21 +291,18 @@ methods : {
 		this.table1.currentDataST = "ttd";
 		this.table1.currentDataName = "Train Data";
 		this.table1.currentPage = 1;
-		this.table1.currenttotalPage = 318;
 		this.loadDataForCurrentPage();
 	},
 	trdBtn() {
 		this.table1.currentDataST = "trd";
 		this.table1.currentDataName = "Test Data";
 		this.table1.currentPage = 1;
-		this.table1.currenttotalPage = 79;
 		this.loadDataForCurrentPage();
 	},
 	vldBtn() {
 		this.table1.currentDataST = "vld";
 		this.table1.currentDataName = "Validation Data";
 		this.table1.currentPage = 1;
-		this.table1.currenttotalPage = 399;
 		this.loadDataForCurrentPage();
 	},
 	gnbBtn() {
@@ -314,16 +313,10 @@ methods : {
 		}
 		this.table1.currentPage = 1;
 		this.table1.currentDataST = "ttd";
-		this.table1.currenttotalPage = 318;
 		this.table1.currentDataName = "Train Data";
 		this.loadDataForCurrentPage();
 	},
 	
-},
-computed: {
-	totalPages() {
-		return 50;
-	},
 },
 async mounted() {
 	console.log("mounted");
