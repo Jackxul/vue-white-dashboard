@@ -227,7 +227,7 @@ methods : {
 		console.log(pageNumber);
 		console.log(this.table1.currentPage);
 		try {
-    		const response = await axios.get(`http://192.168.127.76:8888/${tableInfo}/${gnbNumber}/${pageNumber}`);
+    		const response = await axios.get(`https://jackdata.jackxul45l.work/${tableInfo}/${gnbNumber}/${pageNumber}`);
 				console.log(response.data.pgno);
 				console.log(typeof Object.values(response.data[this.table1.currentGnb]));
     				return response.data.pgno;
@@ -237,7 +237,9 @@ methods : {
 	},
 	async getChartData(gnbNumber , tableInfo , pageNumber) {
 		try {
-    		const response = await axios.get(`http://192.168.127.76:8888/${tableInfo}/${gnbNumber}/${pageNumber}`);
+		
+    		const response = await axios.get(`https://jackdata.jackxul45l.work/${tableInfo}/${gnbNumber}/${pageNumber}`);
+		
 				console.log(typeof Object.values(response.data[this.table1.currentGnb]));
     				return Object.values(response.data[this.table1.currentGnb]);
 			}catch(error) {
